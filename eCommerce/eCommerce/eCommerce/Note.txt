@@ -1,0 +1,324 @@
+﻿constraints: table =>
+{
+    table.PrimaryKey("PK_Customer", x => x.CustomerId);
+    table.ForeignKey(
+        name: "FK_Customer_Thanas_ThanaId",
+        column: x => x.ThanaId,
+        principalTable: "Thanas",
+        principalColumn: "ThanaId",
+        onDelete: ReferentialAction.Cascade);
+    table.ForeignKey(
+        name: "FK_Customer_Users_UserId",
+        column: x => x.UserId,
+        principalTable: "Users",
+        principalColumn: "UserId",
+        onDelete: ReferentialAction.NoAction);
+});
+
+==============================================================
+Description for Sales and Purchase
+==============================================================
+
+Sales >
+      - Generate OrderNo & Create Order with ShippingAddressId
+      - Create SalesMaster with OrderId
+      - Update OutQuantity from SalesDetails Table
+      - Update InStockQuantity from Stock Table
+      - If InStockQuantity is <= 5 then Product status from
+        Product table will changed to NotAvailable
+
+Purchase >
+      - Create PurchaseMaster
+      - Add or Update PurchaseDetails with ProductCode and PurchaseMasterId
+      - Update InQuantity value from StockDetails Table
+      - Calculate and Update InStockQuantity value from Stock Table
+      - Update Status of the Product to Available
+
+
+
+
+New
+--------
+Purchase
+-------------------------------
+Product insert korar somoy PurchaseDetails a individual product insert hobe.
+
+PurchaseDetails a insert korar somoy PurchaseMaster a TotalPrice calculate hoye add hobe.
+
+ProductCode, ModelId, ColorId, SizeId, ExpiryDate, PurchasePrice, SalesPrice same hole Stock Table a aki row te InQuanty add hobe.
+
+Er jekono akta different hole Kintu ProductCode same hole alada row create hobe jar LotNo 1 bere jabe.
+
+Jodi ProductCode Stock table a na thake tahole Stock table a new row create hobe jekhane LotNo 1 hobe.
+
+Stock a add howar somoy Product er status Available hoye jabe.
+
+Stock table a individual product insert howar somoy ProductCode diye ProductId khuje, Product table a oi nirdistho product er SalesPrice bose jabe and PreviousPrice Calculate hobe.
+
+
+
+
+Sales
+---------------------------------
+Protidin new OrderNo generate hobe, First OrderNo YYYYMMDD1 theke start hobe.
+
+Order kora product gulo SalesDetails table a joma hobe. Vat, Discount r TotalAmount calculate hobe.
+
+SalesMaster a akta master row create hobe jekhane delivery fee soho TotalAmount and TotalQuantity calculate hobe.
+
+Stock table theke ExpiryDate ache amon product er moddhe theke Ager lot er OutQty bere jabe and InStockQty, StockPrice update hobe.
+
+Jodi Product er InStockQty 5 er theke kom hoye jai tahole Product table a oi product er Status NotAvailable hoye jabe.
+
+
+=========================================================
+JSON Query for Place Order
+=========================================================
+
+{
+    "Order": {
+        "OrderNo": "dfasdf",
+        "ShippingAddressId": 1,
+        "CustomerId": 1,
+        "OrderStatus": 0,
+        "DeliveryStatus": 0,
+        "DeliveryFee": 50,
+        "PaymentStatus": true,
+        "TransactionId": "TRX234567",
+        "TotalAmount": 550
+    },
+    "SalesMaster": {
+        "OrderId": 1,
+        "TotalQuantity": 5,
+        "TotalPrice": 600,
+        "VoucherNo": "234567895",
+        "BillNo": "34567890",
+        "TotalAmount": 550,
+        "Note": "ghdfadgf",
+        "SalesDetails": [
+            {
+                "SalesMasterId": 1,
+                "UintPrice": 60,
+                "UnitQuantity": 2,
+                "ModelId": 2,
+                "ColorId": 2,
+                "SizeId": 1,
+                "VatRate": 15,
+                "DiscountRate": 8,
+                "NetAmount": 120,
+                "ProductId": 2
+            },
+            {
+                "SalesMasterId": 1,
+                "UintPrice": 40,
+                "UnitQuantity": 16,
+                "ModelId": 1,
+                "ColorId": 2,
+                "SizeId": 1,
+                "VatRate": 15,
+                "DiscountRate": 8,
+                "NetAmount": 80,
+                "ProductId": 3
+            },
+            {
+                "SalesMasterId": 1,
+                "UintPrice": 40,
+                "UnitQuantity": 1,
+                "ModelId": 1,
+                "ColorId": 2,
+                "SizeId": 1,
+                "VatRate": 15,
+                "DiscountRate": 8,
+                "NetAmount": 40,
+                "ProductId": 3
+            }
+        ]
+    }
+}
+
+
+===========================================================
+JSON Query for PurchaseMaster
+===========================================================
+
+
+{
+    "EntryBy": "678cd726-5ace-4773-de11-08d8686aba4c",
+    "TotalQuantity": 20,
+    "TotalPrice": 12000,
+    "DiscountRate": 5,
+    "VatRate": 3,
+    "LaborCost": 500,
+    "VoucharNo": "234567890",
+    "BillNo": "33456789",
+    "Note": "jhjkdfhjksgj",
+    "NetAmount": 10000,
+    "PurchaseDetails": [
+        {
+            "ProductId": 2,
+            "ProductCode": "P02",
+            "ModelId": 2,
+            "ColorId": 2,
+            "SizeId": 1,
+            "EntryBy": "678cd726-5ace-4773-de11-08d8686aba4c",
+            "UnitPrice": 500,
+            "DiscountRate": 5,
+            "VatRate": 15,
+            "NetAmount": 500,
+            "UnitQuantity": 50,
+            "TotalPrice": 1400,
+            "SalesPrice": 700,
+            "Description": "gdfgdf",
+            "MasterId": 1
+        },
+        {
+            "ProductId": 3,
+            "ProductCode": "P03",
+            "ModelId": 1,
+            "ColorId": 2,
+            "SizeId": 1,
+            "EntryBy": "678cd726-5ace-4773-de11-08d8686aba4c",
+            "UnitPrice": 700,
+            "DiscountRate": 10,
+            "VatRate": 15,
+            "NetAmount": 800,
+            "UnitQuantity": 40,
+            "TotalPrice": 32000,
+            "SalesPrice": 900,
+            "Description": "gdfgdf",
+            "MasterId": 1
+        }
+    ]
+}
+
+
+Mehedi
+------
+UserManager Controller > SignUp and SignIn With JWT
+Orders Controller > Sales Action
+Home Controller > GetProducts, GetProductsById, GetCategoryByParent, HotDeals, ParentId
+AdminsController > PurchaseHistory, OrderHistoryByStatus LINQ Query
+ProductDetailsController > AddToWishList Action
+
+Mily
+-----
+PurchaseMastersController > PostPurchaseMaster Action
+ShippingAddressesController > PostShippingAddress Action
+AdminsControlelr > OrdersHistory LINQ Query
+HomeController > TrackOrder Action
+
+Emran
+------
+ProductsControler > PostProduct Action
+CategoriesController > Try Catch, Duplicate Check
+UnitsController > Try Catch, Duplicate Check
+AdminsControleler > SalesHistory, SalesShortHistory LINQ Query
+
+Dipu
+-----
+ThanasController > Try Catch, Duplicate Check
+DistrictsController > Try Catch, Duplicate Check
+CurriersController > Try Catch, Duplicate Check
+AdminsController > StockHistory LINQ Query
+
+
+
+
+
+Customer Actions
+----------------
+G-GetProducts
+G-GetCategories
+G-GetCategoriesById
+P-AddToWishList
+P-PostShippingAddress
+P-Sales
+G-TrackOrder
+G-hotdeals
+
+
+Admin Controller
+----------------
+P-PostProduct
+P-PostCategory
+P-PostPurchase
+G-PurchaseHistory
+G-OrderHistory
+G-OrdersByStatus
+G-OrdersByCustomer
+G-OrdersByDateRange
+G-StockHistory
+G-ExpiredProducts
+G-WishList
+G-SalesHistory
+G-SalesHistoryByDate
+G-SalesShortSummary
+P-UpdateOrder
+
+
+
+
+
+
+
+
+
+Controllers
+====================================================
+AddShippingAddress(ShippingAddress shippingAddress);
+
+CreateOrder(Vm vm);
+
+
+
+Admin Controller
+--------------------------
+AllOrders();CancelOrder();
+PurchaseHistory();
+SalesHistory();
+
+
+
+Emran
+-----
+PurchaseMasterController
+    
+CategoriesController
+    -AddCategory();UpdateCategory();DeleteCategory();
+
+Mily
+-----
+ProductsController, ProductDetails
+    
+UnitsController
+    -CreateUnit();UpdateUnit();DeleteUnit();
+
+Dipu
+-----
+ThanasController
+    -CreateThana();UpadateThana();DeleteThana();
+DistrictsController
+    -CreateDistrict();UpdateDistrict();DeleteDistrict();
+CurriersController
+    -CreateCurrier();UpdateCurrier();DeleteCurrier();
+
+
+30/09/2020
+==========
+Emran
+-----
+purchaseMaster
+Categories a try-catch, duplicate insert prevent korte hobe
+
+Mily
+----
+Products a lot no insert er kajta chinta kore korar cesta korben
+Unit a try-catch, duplicate insert prevent korte hobe
+
+Dipu
+----
+Thanas a try-catch, duplicate insert prevent korte hobe
+District a try-catch, duplicate insert prevent korte hobe
+Currier a try-catch, duplicate insert prevent korte hobe
+
+ager j model vag kora chilo segulote annotation ensure korben

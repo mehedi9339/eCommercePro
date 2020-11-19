@@ -1,0 +1,183 @@
+﻿SignUp
+-------
+POST: https://localhost:44322/api/UserManager
+{
+    "UserName": "df@df.com",
+    "Email": "df@df.com",
+    "Password": "Test@1234"
+}
+userType: customer
+
+Sign In
+-------
+POST: https://localhost:44322/api/UserManager/SignIn
+{
+    "UserName": "df@df.com",
+    "Email": "df@df.com",
+    "Password": "Test@1234"
+}
+
+View Products
+--------------
+GET: https://localhost:44322/api/Home/products
+
+Get Products By Id
+---------------------
+GET: https://localhost:44322/api/Home/products/2
+
+Get Root Category
+---------------------
+GET: https://localhost:44322/api/Home/getcategory/0
+
+Get Categories By Id
+---------------------
+GET: https://localhost:44322/api/Home/getcategory/1
+
+Get Hot Deals
+--------------
+GET: https://localhost:44322/api/Home/hotdeals
+
+Post Multiple Category
+----------------------
+POST: https://localhost:44322/api/Categories
+[
+    {
+        "Name": "AAAA",
+        "ParentId": 0
+    },
+    {
+        "Name": "BBB",
+        "ParentId": 1
+    }
+]
+
+[
+    {
+        "Name": "CCC",
+        "ParentId": 0
+    },
+    {
+        "Name": "BBB",
+        "ParentId": 1
+    }
+]
+
+Post a Product
+--------------
+POST: https://localhost:44322/api/Products
+{
+    "categoryId": 1,
+    "status": 0,
+    "name": "LCD Monitor",
+    "unitId": 1,
+    "productCode": "P067",
+    "discountRate": 8.00,
+    "salesDiscountRate": 5.00,
+    "salesPrice": 5000.00,
+    "productDescription": "Electronics",
+    "expireDate": "2025-02-02T00:00:00",
+    "image1": "tv.img",
+    "image2": "tv.img",
+    "image3": "tv.img"
+}
+
+Post a PurchaseMasters
+---------------------
+POST: https://localhost:44322/api/PurchaseMasters
+{
+    "purchaseDate": "2019-12-03T00:00:00",
+    "entryBy": "acdd3a70-b23a-4249-948e-26f6977f822c",
+    "totalQuantity": 78,
+    "totalPrice": 6000.00,
+    "discountRate": 5.00,
+    "vatRate": 3.00,
+    "laborCost": 100.00,
+    "voucharNo": "avbfgdf",
+    "billNo": "123",
+    "note": "",
+    "netAmount": 5688.00
+}
+
+Post PurchaseDetais
+---------------------
+POST: https://localhost:44322/api/PurchaseDetails
+{
+    "productId": 4,
+    "productCode": "P067",
+    "entryDate": "2025-02-02T00:00:00",
+    "entryBy": "deaae725-2ff4-47c7-950e-c2bc7e3a8784",
+    "purchasePrice": 300.00,
+    "discountRate": 5.00,
+    "vatRate": 3.00,
+    "netAmount": 565.00,
+    "unitQuantity": 65,
+    "totalPrice": 4000.00,
+    "salesPriice": 5000.00,
+    "description": "dfas",
+    "expiryDate": "2021-02-02T00:00:00",
+    "masterId": 1
+}
+
+Create Order
+--------------
+POST: https://localhost:44322/api/Orders
+{
+    "name": "Mr ABC",
+    "phone": "01789876543",
+    "districtId": 1,
+    "thanaId": 1,
+    "address": "Dhaka",
+    "customerId": 1,
+    "currierId": 1
+}
+*TOKEN
+trxId=TRX3456789
+
+Add to WishList
+--------------
+POST: https://localhost:44322/api/ProductDetails
+qty=687
+id=4
+
+Check WishList
+--------------
+GET: https://localhost:44322/api/WishLists
+
+Check Purchase History
+---------------------
+GET: https://localhost:44322/api/Admins/PurchaseHistory
+
+Check Order History
+---------------------
+GET: https://localhost:44322/api/Admins/OrderHistory
+
+Check Stock History
+---------------------
+GET: https://localhost:44322/api/Admins/StockHistory
+
+Check Sales History
+---------------------
+GET: https://localhost:44322/api/Admins/SalesHistory
+
+Check Sales Short History
+----------------------------
+GET: https://localhost:44322/api/Admins/SalesShortSummary
+
+Track an Order
+--------------
+GET: https://localhost:44322/api/Home/trackorder
+orderNo:ORD202010031
+
+Update Order Status
+--------------------
+POST: https://localhost:44322/api/Admins
+orderNo:ORD202010031
+orderStatus: Delivered
+
+Order by OrderStatus
+--------------------
+GET: https://localhost:44322/api/Admins/OrdersByStatus
+orderStatus: Delivered
+
+
+
